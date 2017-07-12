@@ -1,0 +1,47 @@
+---
+title: "Lab2Q3"
+output:
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Please make sure "database.sqlite" file is in current working directory.
+
+## Installing and Loading required libraries
+```{r,message=F,warning=F}
+if(!require(RSQLite))
+    install.packages("RSQLite")
+library(RSQLite,quietly = T)
+```
+
+## Creating connection to sqlite
+```{r}
+con = dbConnect(SQLite(),dbname = "database.sqlite")
+
+dbListTables(con)
+```
+
+## Pulling all the data from Player
+```{r}
+Player = dbGetQuery(con,"SELECT * FROM Player")
+
+head(Player)
+```
+
+## Pulling all the data from Team
+```{r}
+Team = dbGetQuery(con,"SELECT * FROM Team")
+
+head(Team)
+```
+
+## Saving data frames to .csv files
+```{r}
+write.csv(Player,file = "player.csv",row.names = F)
+write.csv(Team,file = "team.csv",row.names = F)
+
+```

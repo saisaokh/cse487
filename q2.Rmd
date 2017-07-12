@@ -1,0 +1,33 @@
+---
+title: "Lab2Q2"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Loading required libraries
+```{r,warning=FALSE,message=FALSE}
+if(!require(XML))
+{
+    install.packages("XML")
+    
+}
+library(XML,quietly = T)
+```
+
+## Accessing XML from URL
+```{r}
+url = "http://aiweb.cs.washington.edu/research/projects/xmltk/xmldata/data/courses/reed.xml"
+WUdata = xmlToDataFrame(url)
+
+```
+
+## Saving data frame to .csv file
+```{r}
+write.csv(WUdata,file = "WUdata.csv",row.names = F)
+
+```
+
+Please find the "WUdata.csv" file in current working directory.

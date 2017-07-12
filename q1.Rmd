@@ -1,0 +1,80 @@
+---
+title: "Lab2Q1"
+output:
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Installing packages
+```{r}
+library(nycflights13)
+library(dplyr)
+
+```
+
+## Loading data
+```{r}
+data("flights")
+head(flights)
+```
+
+## Function 1 - Select
+```{r}
+temp1 = select(flights, year:day, dep_delay, arr_delay)
+dim(temp1)
+head(temp1)
+```
+
+## Function 2 - Filter
+```{r}
+temp2 = filter(flights, dep_delay > 240)
+dim(temp2)
+head(temp2)
+```
+
+## Function 3 - Arrange
+```{r}
+temp3 = arrange(flights, year, month, day)
+dim(temp3)
+head(temp3)
+```
+
+This arranges the dataset in increasing order of Year,Month and Day
+
+## Function 4 - Mutate
+```{r}
+temp4 = mutate(flights, speed = air_time / distance)
+dim(temp4)
+head(temp4)
+head(temp4$speed)
+```
+
+This function creates a new coloumn based on some give formula
+
+## Function 5 - Summarise
+```{r}
+temp5 = summarise(flights, delay = mean(dep_time,na.rm = T))
+temp5
+```
+
+## Function 6 - Group_By
+
+group_by function is usually used with combination of other functions to first split the data according to some factor and then apply operations on each split.One example can be found below.
+
+
+```{r}
+by_tailnum =  group_by(flights, tailnum)
+delay = summarise(by_tailnum,
+    count = n(),
+    dist = mean(distance),
+    delay = mean(arr_delay)
+    )
+delay = filter(delay, count > 20, dist < 2000)
+
+```
+
+The advantage of dplyr is that the expressions in select(), filter(), arrange(), mutate(), and summarise() are translated into SQL so they can be run on the database.
